@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const path = require("path");
 const { mainModule } = require("process");
-const { uuid } = require("uuidv4");
+const { v4: uuidv4 } = require('uuid');
 
 const contactsPath = path.join(__dirname, "/db/contacts.json");
 
@@ -33,7 +33,7 @@ async function removeContact(contactId) {
 
 async function addContact(name, email, phone) {
   const contacts = await listContacts();
-  const contactToAdd = { id: uuid(), name, email, phone };
+  const contactToAdd = { id: uuidv4(), name, email, phone };
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
   return contactToAdd;
 }
