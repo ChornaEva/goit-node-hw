@@ -1,40 +1,46 @@
-// импорт модулей fs и path для работы с файловой системой
 const fs = require("fs/promises");
 const path = require("path");
+const { mainModule } = require("process");
+const { uuid } = require("uuidv4");
 
-// путь к файлу
 const contactsPath = path.join(__dirname, "/db/contacts.json");
-console.log(contactsPath);
 
-// список контактов
 async function listContacts() {
   const data = await fs.readFile(contactsPath);
   const contacts = JSON.parse(data);
-  //   console.log(contacts);
   return contacts;
 }
 
-// получить контакт по ид
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const result = contacts.find((item) => item.id == contactId);
+  const result = contacts.find((contact) => contact.id === contactId);
   if (!result) {
     return null;
   }
   return result;
 }
 
-// удалить контакт
-function removeContact(contactId) {
-  // ...твой код
+async function removeContact(contactId) {
+  const contacts = await listContacts();
+  const index = contacts.findIndex((contact) => contact.id === contactId);
+  if (index === -1) {
+    return null;
+  }
+  const removedContact = contacts.splice(index, 1);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+  return removedContact;
 }
 
-// добавить контакт
-function addContact(name, email, phone) {
-  // ...твой код
+async function addContact(name, email, phone) {
+  const contacts = await listContacts();
+  const contactToAdd = { id: uuid(), name, email, phone };
+  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+  return contactToAdd;
 }
 
 module.exports = {
   listContacts,
   getContactById,
+  removeContact,
+  addContact,
 };
