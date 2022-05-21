@@ -1,5 +1,16 @@
 <!-- Результат выполнения команд -->
+# Получаем и выводим весь список контактов в виде таблицы (console.table)
+node index.js --action list
 https://ibb.co/K5WHvFT
+
+# Получаем контакт по id
+node index.js --action get --id 5
 https://ibb.co/NxNYtPn
-https://ibb.co/HxCr7qR
+
+# Добавялем контакт
+node index.js --action add --name Mango --email mango@gmail.com --phone 322-22-22
 https://ibb.co/ZW6NzTf
+
+# Удаляем контакт
+node index.js --action remove --id=3
+https://ibb.co/HxCr7qR
